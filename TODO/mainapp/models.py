@@ -1,5 +1,9 @@
+from datetime import datetime
+
 from django.db import models
 from uuid import uuid4
+
+from django.utils.timezone import now
 
 
 class BaseUser(models.Model):
@@ -9,6 +13,8 @@ class BaseUser(models.Model):
     lastname = models.CharField(max_length=64, null=True)
     email = models.EmailField(unique=True)
     password = models.TextField()
+    created_at = models.DateTimeField(default=now())
+    updated_at = models.DateTimeField(default=now())
 
     def __str__(self):
         return f'{self.username} /// {self.email}'
