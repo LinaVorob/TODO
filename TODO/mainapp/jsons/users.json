@@ -1,0 +1,16 @@
+[
+  {
+      "username": "LoginLikeLogin",
+      "firstname": "Сергей",
+      "lastname": "Иванов",
+      "email": "loginLL@itmo.com",
+      "password": ""
+  },
+  {
+      "username": "Topi",
+      "firstname": "Марина",
+      "lastname": "Воробьева",
+      "email": "marina@mail.ru",
+      "password": ""
+  }
+]
