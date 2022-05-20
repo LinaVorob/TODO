@@ -1,12 +1,14 @@
 from datetime import datetime
 
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from uuid import uuid4
 
+from django.db.models import Model
 from django.utils.timezone import now
 
 
-class BaseUser(models.Model):
+class BaseUser(Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4)
     username = models.CharField(max_length=64)
     firstname = models.CharField(max_length=64, null=True)
