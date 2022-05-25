@@ -10,7 +10,7 @@ class Project(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4)
     name = models.CharField(max_length=64)
     repohref = models.URLField(null=True)
-    user = models.CharField(max_length=64)
+    user = models.ForeignKey(BaseUser, on_delete=models.SET(None))
     created_at = models.DateTimeField(default=now())
     updated_at = models.DateTimeField(default=now())
 
@@ -27,7 +27,7 @@ class Todo(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     text = models.TextField()
     users = models.ManyToManyField(BaseUser)
-    author = models.CharField(max_length=64)
+    author = models.ForeignKey(BaseUser, on_delete=models.SET(None), related_name='author')
     created_at = models.DateTimeField(default=now())
     updated_at = models.DateTimeField(default=now())
     status = models.BooleanField(default=1)

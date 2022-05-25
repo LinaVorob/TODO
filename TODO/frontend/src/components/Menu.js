@@ -1,10 +1,11 @@
 import React from "react";
 import './bootstrap/css/bootstrap.min.css'
+import { Link } from "react-router-dom";
 
 const MenuItem = ({item}) => {
     return (
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href={item.href}>{item.name}</a>
+          <Link to={item.href} class="nav-link active" aria-current="page">{item.name}</Link>
         </li>
     )
 }
