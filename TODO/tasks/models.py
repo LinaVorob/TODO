@@ -10,7 +10,7 @@ class Project(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4)
     name = models.CharField(max_length=64)
     repohref = models.URLField(null=True)
-    user = models.ForeignKey(BaseUser, on_delete=models.SET(None))
+    user = models.ForeignKey(BaseUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=now())
     updated_at = models.DateTimeField(default=now())
 

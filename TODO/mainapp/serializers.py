@@ -1,6 +1,4 @@
 from rest_framework.serializers import HyperlinkedModelSerializer
-
-from tasks.models import Project, Todo
 from .models import BaseUser
 
 

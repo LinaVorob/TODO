@@ -32,7 +32,6 @@ class App extends React.Component {
       'projects': [],
       'todos': [],
       'token': '',
-      'username' : 'Guest',
     }
   }
 
@@ -48,7 +47,6 @@ class App extends React.Component {
       .then(response => {
         this.set_token(response.data['token'])
         }).catch(error => alert("Неверный пароль"))
-    this.setState({'username': login})
   }
 
   get_headers(){
@@ -67,7 +65,6 @@ class App extends React.Component {
 
   logout(){
     this.set_token('')
-    this.setState({'username': 'Guest'})
   }
 
   get_token_from_storage(){
@@ -134,7 +131,6 @@ class App extends React.Component {
                       {this.is_authenticated() ? <button onClick={() => this.logout()}>Logout</button> : <Link to='/login'>Login</Link>}
                     </il>
                   </ul>
-                  Имя пользователя: {this.state.username}
                 </div>
             </div>
         </nav>

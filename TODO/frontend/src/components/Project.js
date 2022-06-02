@@ -11,7 +11,7 @@ const ProjectItem = ({project}) => {
                 {project.repohref}
             </td>
             <td>
-                {project.user}
+                {project.user.username}
             </td>
             <td>
                 {project.update_at}
