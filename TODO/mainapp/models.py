@@ -13,8 +13,10 @@ class BaseUser(Model):
     lastname = models.CharField(max_length=64, null=True)
     email = models.EmailField(unique=True)
     password = models.TextField()
-    created_at = models.DateTimeField(default=now())
-    updated_at = models.DateTimeField(default=now())
+    is_superuser = models.BooleanField(null=False, default=False)
+    is_staff = models.BooleanField(null=False, default=False)
+    created_at = models.DateTimeField(default=now)
+    updated_at = models.DateTimeField(default=now)
 
     def __str__(self):
         return f'{self.username} /// {self.email}'
