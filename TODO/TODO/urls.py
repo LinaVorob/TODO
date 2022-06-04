@@ -19,7 +19,6 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    # re_path(r'^(?P<version>\d\.\d\.\d)/users/$', UserViewSet.as_view({'get': 'list'}))
     path('1.1.1/users/', include('mainapp.urls', namespace='1.1.1')),
-    path('2.2.2/users/', include('mainapp.urls', namespace='2.2.2'))
+    path('2.0.1/users/', include('mainapp.urls', namespace='2.0.1')),
 ]

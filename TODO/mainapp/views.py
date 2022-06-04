@@ -9,7 +9,7 @@ class UserViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Updat
                   mixins.CreateModelMixin):
     queryset = BaseUser.objects.all()
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
-    serializer_class = UserModelSerializer()
+    serializer_class = UserModelSerializer
 
     def get_serializer_class(self):
         print(f'Версия: {self.request.version}')
