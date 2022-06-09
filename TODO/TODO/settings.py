@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'drf_yasg',
+    'graphene_django',
     'mainapp',
     'tasks',
 ]
@@ -137,4 +138,8 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
+}
+
+GRAPHENE = {
+    'SCHEMA': 'TODO.schema.schema'
 }

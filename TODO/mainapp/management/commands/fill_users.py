@@ -38,10 +38,12 @@ class Command(BaseCommand):
         uuids = BaseUser.objects.values("uuid")
         for _ in range(NUMBER_OF_STRINGS):
             uuid_project = random.choice(uuids)
+            # print(uuid_project)
+            # print(BaseUser.objects.filter(uuid=uuid_project['uuid']).first())
             new_project = Project(
                 name=texts.word(),
-                reporef=internet_obj.url(),
-                user=BaseUser.objects.filter(uuid=uuid_project).all(),
+                repohref=internet_obj.url(),
+                user=BaseUser.objects.filter(uuid=uuid_project['uuid']).first(),
                 created_at=mimesis.Datetime(Locale.RU).datetime(start=2010)
             )
             new_project.save()
@@ -53,9 +55,9 @@ class Command(BaseCommand):
             uuid_theme = random.choice(uuids_projects)
             author_uuid = random.choice(uuids)
             new_todo = Todo(
-                project=Project.objects.filter(uuid=uuid_theme).all(),
+                project=Project.objects.filter(uuid=uuid_theme['uuid']).first(),
                 text=texts.text(quantity=2),
-                author=BaseUser.objects.filter(uuid=author_uuid).all(),
+                author=BaseUser.objects.filter(uuid=author_uuid['uuid']).first(),
                 created_at=mimesis.Datetime(Locale.RU).datetime(start=2010)
             )
             new_todo.save()
