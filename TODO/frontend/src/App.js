@@ -10,6 +10,8 @@ import TodoList from './components/ToDo';
 import {BrowserRouter, Route, Switch, Link} from 'react-router-dom';
 import LoginForm from './components/Auth';
 import Cookies from 'universal-cookie';
+import ProjectForm from './components/ProjectForm';
+import TodoForm from './components/TodoForm';
 
 const NotFound404 = ({ location }) => {
   return (
@@ -25,8 +27,8 @@ class App extends React.Component {
     this.state = {
       'menu': [
         {name: 'ToDo', href:'/'},
-        {name: 'Проекты', href:'/projects'},
-        {name: 'Пользователи', href:'/users'},
+        {name: 'Проекты', href:'/projects/'},
+        {name: 'Пользователи', href:'/users/'},
       ],
       'users': [],
       'projects': [],
@@ -60,7 +62,7 @@ class App extends React.Component {
   }
 
   is_authenticated(){
-    return this.state.token != ''
+    return this.state.token !== ''
   }
 
   logout(){
@@ -75,7 +77,7 @@ class App extends React.Component {
 
   load_data(){
     const headers = this.get_headers()
-    axios.get('http://127.0.0.1:8000/users', {headers})
+    axios.get('http://127.0.0.1:8000/users/', {headers})
       .then(response => {
         const users = response.data.results
           this.setState(
@@ -85,7 +87,7 @@ class App extends React.Component {
           )
       }).catch(error => console.log(error))
 
-    axios.get('http://127.0.0.1:8000/projects', {headers})
+    axios.get('http://127.0.0.1:8000/projects/', {headers})
       .then(response => {
         const projects = response.data.results
           this.setState(
@@ -95,7 +97,7 @@ class App extends React.Component {
           )
       }).catch(error => console.log(error))
 
-    axios.get('http://127.0.0.1:8000/todo', {headers})
+    axios.get('http://127.0.0.1:8000/todo/', {headers})
       .then(response => {
         const todos = response.data.results
           this.setState(
@@ -111,6 +113,48 @@ class App extends React.Component {
         
   }
 
+  deleteProject(uuid){
+    const headers = this.get_headers()
+    axios.delete(`http://127.0.0.1:8000/projects/${uuid}/`, {headers})
+      .then(response => {
+        this.setState({projects: this.state.projects.filter((project) => project.uuid !== uuid)})
+      }).catch(error => console.log(error))
+  }
+
+  deleteTodo(uuid){
+    const headers = this.get_headers()
+    axios.delete(`http://127.0.0.1:8000/todo/${uuid}/`, {headers})
+      .then(response => {
+        this.setState({todos: this.state.todos.filter((todo) => todo.uuid !== uuid)})
+      }).catch(error => console.log(error))
+  }
+
+  createProject(name, repohref, user) {
+    const headers = this.get_headers()
+    const data = {name: name, repohref:repohref, user: user}
+    axios.post(`http://127.0.0.1:8000/projects/`, data, {headers})
+        .then(response => {
+          let new_project = response.data
+          const user = this.state.users.filter((item) => item.uuid == new_project.user)[0]
+          new_project.user = user
+          this.setState({projects: [...this.state.projects, new_project]})
+        }).catch(error => console.log(error))
+  }
+
+  createTodo(project, text, author) {
+    const headers = this.get_headers()
+    const data = {project: project, text:text, author: author}
+    axios.post(`http://127.0.0.1:8000/todo/`, data, {headers})
+        .then(response => {
+          let new_todo = response.data
+          const author = this.state.users.filter((item) => item.uuid == new_todo.author)[0]
+          const project = this.state.projects.filter((item) => item.uuid == new_todo.project)[0]
+          new_todo.author = author
+          new_todo.project = project
+          this.setState({todos: [...this.state.todos, new_todo]})
+        }).catch(error => console.log(error))
+  }
+
   render () {
     return (
       <div class='App'>
@@ -124,21 +168,23 @@ class App extends React.Component {
                       <span class="navbar-toggler-icon"></span>
                   </button>
                   <div class="collapse navbar-collapse" id="navbarNav">
-                  <ul class="navbar-nav">
+                    <ul class="navbar-nav">
                     
-                    <MenuList items={this.state.menu}/>
-                    <il>
-                      {this.is_authenticated() ? <button onClick={() => this.logout()}>Logout</button> : <Link to='/login'>Login</Link>}
-                    </il>
-                  </ul>
-                </div>
-            </div>
-        </nav>
+                      <MenuList items={this.state.menu}/>
+                      <il>
+                        {this.is_authenticated() ? <button onClick={() => this.logout()}>Logout</button> : <Link to='/login/'>Login</Link>}
+                      </il>
+                    </ul>
+                  </div>
+              </div>
+            </nav>
             <Switch>
-              <Route exact path='/' component={() => <TodoList todos={this.state.todos} />} />
-              <Route exact path='/projects' component={() => <ProjectList projects={this.state.projects} />} />
-              <Route exact path='/users' component={() => <UserList users={this.state.users} />} />
-              <Route exact path='/login' component={() => <LoginForm get_token={(login, password) => this.get_token(login, password)}/>} />
+              <Route exact path='/' component={() => <TodoList todos={this.state.todos} deleteTodo={(uuid) => this.deleteTodo(uuid)}/>} />
+              <Route exact path='/projects/' component={() => <ProjectList projects={this.state.projects} deleteProject={(uuid) => this.deleteProject(uuid)} /> } />
+              <Route exact path='/projects/create/' component={() => <ProjectForm users={this.state.users} createProject={(name, repohref, user) => this.createProject(name, repohref, user)} /> } />
+              <Route exact path='/todo/create/' component={() => <TodoForm users={this.state.users} projects={this.state.projects} createTodo={(project, text, author) => this.createTodo(project, text, author)} /> } />
+              <Route exact path='/users/' component={() => <UserList users={this.state.users} />} />
+              <Route exact path='/login/' component={() => <LoginForm get_token={(login, password) => this.get_token(login, password)}/>} />
               <Route component={NotFound404} />
             </Switch>
         </BrowserRouter>

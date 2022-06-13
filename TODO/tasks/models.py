@@ -26,7 +26,7 @@ class Todo(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     text = models.TextField()
-    users = models.ManyToManyField(BaseUser)
+    users = models.ManyToManyField(BaseUser, null=True)
     author = models.ForeignKey(BaseUser, on_delete=models.SET(None), related_name='author')
     created_at = models.DateTimeField(default=now)
     updated_at = models.DateTimeField(default=now)
