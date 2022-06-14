@@ -27,8 +27,8 @@ class App extends React.Component {
     this.state = {
       'menu': [
         {name: 'ToDo', href:'/'},
-        {name: 'Проекты', href:'/projects/'},
-        {name: 'Пользователи', href:'/users/'},
+        {name: 'Проекты', href:'/projects'},
+        {name: 'Пользователи', href:'/users'},
       ],
       'users': [],
       'projects': [],
@@ -77,6 +77,7 @@ class App extends React.Component {
 
   load_data(){
     const headers = this.get_headers()
+    console.log(headers)
     axios.get('http://127.0.0.1:8000/users/', {headers})
       .then(response => {
         const users = response.data.results
@@ -132,9 +133,12 @@ class App extends React.Component {
   createProject(name, repohref, user) {
     const headers = this.get_headers()
     const data = {name: name, repohref:repohref, user: user}
+    console.log('DATA->'+data.user)
+
     axios.post(`http://127.0.0.1:8000/projects/`, data, {headers})
         .then(response => {
           let new_project = response.data
+          console.log(new_project)
           const user = this.state.users.filter((item) => item.uuid == new_project.user)[0]
           new_project.user = user
           this.setState({projects: [...this.state.projects, new_project]})
@@ -144,11 +148,15 @@ class App extends React.Component {
   createTodo(project, text, author) {
     const headers = this.get_headers()
     const data = {project: project, text:text, author: author}
+    console.log('DATA->'+data.author+' '+data.project+' '+data.text)
     axios.post(`http://127.0.0.1:8000/todo/`, data, {headers})
         .then(response => {
           let new_todo = response.data
+          console.log(new_todo)
           const author = this.state.users.filter((item) => item.uuid == new_todo.author)[0]
+          console.log('author->'+author)
           const project = this.state.projects.filter((item) => item.uuid == new_todo.project)[0]
+          console.log('project->'+project)
           new_todo.author = author
           new_todo.project = project
           this.setState({todos: [...this.state.todos, new_todo]})
@@ -172,7 +180,7 @@ class App extends React.Component {
                     
                       <MenuList items={this.state.menu}/>
                       <il>
-                        {this.is_authenticated() ? <button onClick={() => this.logout()}>Logout</button> : <Link to='/login/'>Login</Link>}
+                        {this.is_authenticated() ? <button onClick={() => this.logout()}>Logout</button> : <Link to='/login'>Login</Link>}
                       </il>
                     </ul>
                   </div>
@@ -180,11 +188,11 @@ class App extends React.Component {
             </nav>
             <Switch>
               <Route exact path='/' component={() => <TodoList todos={this.state.todos} deleteTodo={(uuid) => this.deleteTodo(uuid)}/>} />
-              <Route exact path='/projects/' component={() => <ProjectList projects={this.state.projects} deleteProject={(uuid) => this.deleteProject(uuid)} /> } />
-              <Route exact path='/projects/create/' component={() => <ProjectForm users={this.state.users} createProject={(name, repohref, user) => this.createProject(name, repohref, user)} /> } />
-              <Route exact path='/todo/create/' component={() => <TodoForm users={this.state.users} projects={this.state.projects} createTodo={(project, text, author) => this.createTodo(project, text, author)} /> } />
-              <Route exact path='/users/' component={() => <UserList users={this.state.users} />} />
-              <Route exact path='/login/' component={() => <LoginForm get_token={(login, password) => this.get_token(login, password)}/>} />
+              <Route exact path='/projects' component={() => <ProjectList projects={this.state.projects} deleteProject={(uuid) => this.deleteProject(uuid)} /> } />
+              <Route exact path='/projects/create' component={() => <ProjectForm users={this.state.users} createProject={(name, repohref, user) => this.createProject(name, repohref, user)} /> } />
+              <Route exact path='/todo/create' component={() => <TodoForm users={this.state.users} projects={this.state.projects} createTodo={(project, text, author) => this.createTodo(project, text, author)} /> } />
+              <Route exact path='/users' component={() => <UserList users={this.state.users} />} />
+              <Route exact path='/login' component={() => <LoginForm get_token={(login, password) => this.get_token(login, password)}/>} />
               <Route component={NotFound404} />
             </Switch>
         </BrowserRouter>

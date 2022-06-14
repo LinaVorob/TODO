@@ -14,6 +14,7 @@ class ProjectModelSerializer(ModelSerializer):
 
 class ToDoModelSerializer(HyperlinkedModelSerializer):
     users = UserModelSerializer
+    author = UserModelSerializer
     project = ProjectModelSerializer
 
     class Meta:

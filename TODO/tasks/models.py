@@ -27,7 +27,7 @@ class Todo(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     text = models.TextField()
     users = models.ManyToManyField(BaseUser, null=True)
-    author = models.ForeignKey(BaseUser, on_delete=models.SET(None), related_name='author')
+    author = models.ForeignKey(BaseUser, on_delete=models.CASCADE, related_name='author')
     created_at = models.DateTimeField(default=now)
     updated_at = models.DateTimeField(default=now)
     status = models.BooleanField(default=1)

@@ -33,9 +33,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api-token-auth/', obtain_auth_token),
     path('graphql/', GraphQLView.as_view(graphiql=True)),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('1.1.1/users/', include('mainapp.urls', namespace='1.1.1')),
     path('2.0.1/users/', include('mainapp.urls', namespace='2.0.1')),
 
