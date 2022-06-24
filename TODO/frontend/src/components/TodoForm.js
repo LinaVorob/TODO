@@ -29,7 +29,7 @@ class TodoForm extends React.Component {
             <label for="project">project</label>
     
             <select name="project" className='form-control' onChange={(event)=>this.handleChange(event)}>
-                {this.props.projects.map((item)=><option value={item.uuid}>{item.name}</option>)}
+                {this.props.projects.map((item)=><option value={item}>{item.name}</option>)}
             </select>    
             <br></br>   
 
@@ -44,7 +44,7 @@ class TodoForm extends React.Component {
         <div className="form-group">
             <label for="author">author</label>
             <select name="author" className='form-control' onChange={(event)=>this.handleChange(event)}>
-                {this.props.users.map((item)=><option value={item.uuid}>{item.username}</option>)}
+                {this.props.users.map((item)=><option value={item}>{item.username}</option>)}
             </select>       
           </div>
           <input type="submit" className="btn btn-primary" value="Save" />
